@@ -177,14 +177,111 @@
 
   footer.foot{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-family:'IBM Plex Mono';font-size:10.5px;color:var(--ink-soft);}
 
+  /* ---- Welcome overlay ---- */
+  .welcome-mask{
+    position:fixed;inset:0;background:rgba(28,36,48,0.55);z-index:100;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .welcome-mask.hidden{display:none;}
+  .welcome-card{
+    background:#FCFBF7;border-radius:6px;max-width:480px;width:100%;padding:30px 28px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+  }
+  .welcome-card .tag{
+    display:inline-block;background:var(--brass-light);color:var(--brass);border-radius:14px;
+    padding:4px 12px;font-family:'IBM Plex Mono';font-size:10px;font-weight:600;letter-spacing:0.5px;
+    text-transform:uppercase;margin-bottom:14px;
+  }
+  .welcome-card h2{font-family:'IBM Plex Serif';font-size:20px;margin:0 0 10px;}
+  .welcome-card p{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;}
+  .welcome-steps{list-style:none;padding:0;margin:0 0 20px;}
+  .welcome-steps li{
+    display:flex;gap:10px;align-items:flex-start;font-size:13px;margin-bottom:10px;color:var(--ink);
+  }
+  .welcome-steps .num{
+    width:20px;height:20px;background:var(--steel);color:#fff;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-size:10.5px;
+  }
+  .welcome-card button.btn-primary{width:100%;padding:12px 0;font-size:12.5px;}
+
+  .help-fab{
+    position:fixed;bottom:20px;right:20px;width:42px;height:42px;border-radius:50%;
+    background:var(--ink);color:#fff;border:none;font-family:'IBM Plex Serif';font-size:16px;
+    cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);z-index:50;
+  }
+
+  /* ---- Ask the CRM ---- */
+  .ask-panel{
+    background:linear-gradient(135deg,var(--steel-dark),var(--steel));color:#fff;
+    border-radius:var(--radius);padding:20px;margin-bottom:22px;
+  }
+  .ask-panel .tag{
+    display:inline-block;background:rgba(255,255,255,0.15);color:#fff;border-radius:12px;
+    padding:3px 10px;font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;
+  }
+  .ask-panel h3{font-family:'IBM Plex Serif';font-size:16px;margin:0 0 4px;color:#fff;}
+  .ask-panel .sub{font-size:12px;color:rgba(255,255,255,0.75);margin-bottom:14px;}
+  .ask-row{display:flex;gap:8px;}
+  .ask-row input{
+    flex:1;border:none;border-radius:4px;padding:11px 14px;font-family:'IBM Plex Sans';font-size:13px;
+  }
+  .ask-row input:focus{outline:2px solid var(--brass);}
+  .ask-row button{
+    background:var(--brass);color:#1C2430;border:none;padding:0 18px;border-radius:4px;
+    font-family:'IBM Plex Mono';font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:0.4px;
+  }
+  .ask-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+  .ask-chip{
+    background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;
+    padding:6px 12px;border-radius:14px;font-size:11.5px;cursor:pointer;font-family:'IBM Plex Sans';
+  }
+  .ask-chip:hover{background:rgba(255,255,255,0.22);}
+  .ask-answer{
+    margin-top:14px;background:rgba(255,255,255,0.1);border-radius:4px;padding:12px 14px;
+    font-size:13px;line-height:1.5;display:none;
+  }
+  .ask-answer.show{display:block;}
+  .ask-answer .q{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--brass-light);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:5px;}
+
   @media(max-width:820px){
     .kpi-row{grid-template-columns:repeat(2,1fr);}
     .two-col{grid-template-columns:1fr;}
     .form-grid{grid-template-columns:1fr;}
   }
+  @media(max-width:560px){
+    .app{padding:0 14px 40px;}
+    header.topbar{flex-direction:column;align-items:flex-start;gap:14px;}
+    .role-switch{width:100%;}
+    .role-switch button{flex:1;padding:10px 6px;font-size:10.5px;}
+    .kpi-row{grid-template-columns:1fr 1fr;gap:10px;}
+    .kpi .value{font-size:20px;}
+    .flow{flex-direction:column;}
+    .flow-col{min-width:0;padding-right:0;padding-bottom:18px;margin-bottom:8px;border-bottom:1px dashed var(--line);}
+    .flow-col:not(:last-child)::after, .flow-col:not(:last-child)::before{display:none;}
+    .factory-card{flex-direction:column;align-items:flex-start;gap:10px;}
+    .factory-card button.advance{width:100%;}
+    table.orders{display:block;overflow-x:auto;white-space:nowrap;}
+  }
 </style>
 </head>
 <body>
+
+<!-- Welcome overlay: plain-language intro for non-technical viewers -->
+<div class="welcome-mask" id="welcomeMask">
+  <div class="welcome-card">
+    <span class="tag">Working preview</span>
+    <h2>Welcome — here's what you're looking at</h2>
+    <p>This is a live preview of a CRM built specifically around how Unifab already works — not a generic sales tool. Everything on screen is clickable.</p>
+    <ul class="welcome-steps">
+      <li><span class="num">1</span><span>Use the tabs at the top — <strong>Owner, Office, Factory</strong> — to see what each person on the team would see.</span></li>
+      <li><span class="num">2</span><span>In <strong>Office</strong>, try adding a new order — it flows through automatically.</span></li>
+      <li><span class="num">3</span><span>In <strong>Factory</strong>, tap "Mark next stage" and watch a WhatsApp update get generated instantly.</span></li>
+      <li><span class="num">4</span><span>In <strong>Owner</strong>, try typing a plain question into the "Ask" box — no menus to dig through.</span></li>
+    </ul>
+    <button class="btn-primary" id="welcomeGotIt">Got it — let's look around</button>
+  </div>
+</div>
+<button class="help-fab" id="helpFab" title="Show the guide again">?</button>
 <div class="app">
 
   <header class="topbar">
@@ -208,6 +305,23 @@
     <h2 class="section-title">Business overview</h2>
 
     <div class="kpi-row" id="kpi-row"></div>
+
+    <div class="ask-panel">
+      <span class="tag">✦ Ask, don't dig</span>
+      <h3>Ask your business a question</h3>
+      <div class="sub">Type it in plain words — no reports to open, no filters to set.</div>
+      <div class="ask-row">
+        <input id="ask-input" placeholder="e.g. Which orders are overdue?" />
+        <button id="ask-btn">Ask</button>
+      </div>
+      <div class="ask-chips">
+        <span class="ask-chip" data-q="Which orders are overdue?">Which orders are overdue?</span>
+        <span class="ask-chip" data-q="How much payment is pending?">How much payment is pending?</span>
+        <span class="ask-chip" data-q="How many orders need TPI?">How many orders need TPI?</span>
+        <span class="ask-chip" data-q="What's our revenue this month?">What's our revenue this month?</span>
+      </div>
+      <div class="ask-answer" id="ask-answer"></div>
+    </div>
 
     <div class="two-col">
       <div class="panel">
@@ -537,6 +651,61 @@ document.getElementById("btn-submit-order").addEventListener("click", ()=>{
   document.getElementById("f-value").value="";
   document.getElementById("f-notes").value="";
   renderAll();
+});
+
+/* ---------------- Welcome overlay ---------------- */
+const welcomeMask = document.getElementById("welcomeMask");
+document.getElementById("welcomeGotIt").addEventListener("click", ()=> welcomeMask.classList.add("hidden"));
+document.getElementById("helpFab").addEventListener("click", ()=> welcomeMask.classList.remove("hidden"));
+
+/* ---------------- Ask the CRM (plain-language query engine) ---------------- */
+function answerQuestion(q){
+  const ql = q.toLowerCase();
+
+  if(ql.includes("overdue")){
+    const late = orders.filter(o=>new Date(o.deadline) < new Date() && o.stage!=="Paid");
+    if(late.length===0) return "Nothing's overdue right now — every open order is within its deadline.";
+    return `${late.length} order${late.length>1?'s are':' is'} overdue: ${late.map(o=>`${o.id} (${o.client}, due ${o.deadline})`).join("; ")}.`;
+  }
+  if((ql.includes("pending") && ql.includes("payment"))){
+    const pend = orders.filter(o=>o.stage==="Payment Pending");
+    const total = pend.reduce((s,o)=>s+o.value,0);
+    if(pend.length===0) return "No payments are currently pending — all clear.";
+    return `${fmtINR(total)} is pending across ${pend.length} order${pend.length>1?'s':''}: ${pend.map(o=>o.id).join(", ")}.`;
+  }
+  if(ql.includes("tpi")){
+    const tpi = orders.filter(o=>o.tpi==="Yes" && o.stage!=="Paid");
+    return `${tpi.length} open order${tpi.length!==1?'s':''} require TPI sign-off${tpi.length?': '+tpi.map(o=>o.id).join(", "):''}.`;
+  }
+  if(ql.includes("revenue") || ql.includes("this month")){
+    const paid = orders.filter(o=>o.stage==="Paid").reduce((s,o)=>s+o.value,0);
+    return `₹${(paid/100000).toFixed(1)} lakhs collected so far this period, from ${orders.filter(o=>o.stage==="Paid").length} completed order(s). Revenue chart above shows the last 6 months' trend.`;
+  }
+  if(ql.includes("production") || ql.includes("active")){
+    const active = orders.filter(o=>!["Enquiry","Paid"].includes(o.stage));
+    return `${active.length} orders are currently active in the pipeline, spanning ${new Set(active.map(o=>o.equip)).size} equipment types.`;
+  }
+  return "I can answer things like overdue orders, pending payments, TPI status, or revenue — try one of the suggestions below, or rephrase your question.";
+}
+
+function runAsk(q){
+  if(!q || !q.trim()) return;
+  const el = document.getElementById("ask-answer");
+  el.innerHTML = `<div class="q">You asked</div>${q}<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.15)">${answerQuestion(q)}</div>`;
+  el.classList.add("show");
+}
+document.getElementById("ask-btn").addEventListener("click", ()=>{
+  const v = document.getElementById("ask-input").value;
+  runAsk(v);
+});
+document.getElementById("ask-input").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") runAsk(e.target.value);
+});
+document.querySelectorAll(".ask-chip").forEach(chip=>{
+  chip.addEventListener("click", ()=>{
+    document.getElementById("ask-input").value = chip.dataset.q;
+    runAsk(chip.dataset.q);
+  });
 });
 
 /* ---------------- Role switch ---------------- */
